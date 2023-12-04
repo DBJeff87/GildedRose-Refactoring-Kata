@@ -33,7 +33,7 @@ public class GildedRoseTest
     [TestCase(GildedRose.CONJURED)]
     public void Quality_Should_Never_Be_Negative(string itemName)
     {
-        var items = new List<Item> { new Item { Name = itemName, SellIn = 0, Quality = 0 } };
+        var items = new List<Item> { new Item { Name = itemName, SellIn = 0, Quality = 1 } };
         var app = new GildedRose(items);
         app.UpdateQuality();
         Assert.That(items[0].Quality >= 0);
@@ -143,7 +143,7 @@ public class GildedRoseTest
     [Test]
     public void Conjured_Items_Quality_Should_Degrade_Four_Times_As_Fast_Once_Sell_By_Date_Has_Passed()
     {
-        var items = new List<Item> { new Item { Name = "Amulet of Code", SellIn = 0, Quality = 14 } };
+        var items = new List<Item> { new Item { Name = GildedRose.CONJURED, SellIn = 0, Quality = 14 } };
         var app = new GildedRose(items);
         app.UpdateQuality();
         Assert.AreEqual(10, items[0].Quality);

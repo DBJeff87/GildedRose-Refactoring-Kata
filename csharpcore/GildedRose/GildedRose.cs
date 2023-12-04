@@ -18,77 +18,135 @@ public class GildedRose
 
     public void UpdateQuality()
     {
-        for (var i = 0; i < _items.Count; i++)
+        foreach (var item in this._items)
         {
-            if (_items[i].Name != "Aged Brie" && _items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
-            {
-                if (_items[i].Quality > 0)
+            //if (item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert")
+            //{
+            //    if (item.Quality > 0)
+            //    {
+            //        if (item.Name == "Conjured")
+            //        {
+            //            item.Quality -= item.Quality > 1 ? 2: 1;
+            //        }
+            //        else if (item.Name != "Sulfuras, Hand of Ragnaros")
+            //        {
+            //            item.Quality = item.Quality - 1;
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    if (item.Quality < 50)
+            //    {
+            //        item.Quality = item.Quality + 1;
+
+            //        if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
+            //        {
+            //            if (item.SellIn < 11)
+            //            {
+            //                if (item.Quality < 50)
+            //                {
+            //                    item.Quality = item.Quality + 1;
+            //                }
+            //            }
+
+            //            if (item.SellIn < 6)
+            //            {
+            //                if (item.Quality < 50)
+            //                {
+            //                    item.Quality = item.Quality + 1;
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
+            this.UpdateSellIn(item);
+            this.UpdateItemQuality(item);
+
+            //if (item.SellIn < 0)
+            //{
+            //    if (item.Name != "Aged Brie")
+            //    {
+            //        if (item.Name != "Backstage passes to a TAFKAL80ETC concert")
+            //        {
+            //            if (item.Quality > 0)
+            //            {
+            //                if (item.Name == "Conjured")
+            //                {
+            //                    item.Quality -= item.Quality > 1 ? 2 : 1;
+            //                }
+            //                else if (item.Name != "Sulfuras, Hand of Ragnaros")
+            //                {
+            //                    item.Quality = item.Quality - 1;
+            //                }
+            //            }
+            //        }
+            //        else
+            //        {
+            //            item.Quality = item.Quality - item.Quality;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (item.Quality < 50)
+            //        {
+            //            item.Quality = item.Quality + 1;
+            //        }
+            //    }
+            //}
+        }
+    }
+    private void UpdateSellIn(Item item)
+    {
+        item.SellIn -= item.Name == SULFURAS ? 0 : 1;
+    }
+
+    private void UpdateItemQuality(Item item)
+    {
+        int changeInQuality;
+
+        switch (item.Name)
+        {
+            case SULFURAS:
+                return;
+            case AGED_BRIE:
+                changeInQuality = item.SellIn < 0 ? 2 : 1;
+                break;
+            case BACKSTAGE_PASSES:
+                if (item.SellIn < 0)
                 {
-                    if (_items[i].Name != "Sulfuras, Hand of Ragnaros")
-                    {
-                        _items[i].Quality = _items[i].Quality - 1;
-                    }
+                    changeInQuality = -item.Quality;
                 }
-            }
-            else
-            {
-                if (_items[i].Quality < 50)
+                else if (item.SellIn < 5)
                 {
-                    _items[i].Quality = _items[i].Quality + 1;
-
-                    if (_items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
-                    {
-                        if (_items[i].SellIn < 11)
-                        {
-                            if (_items[i].Quality < 50)
-                            {
-                                _items[i].Quality = _items[i].Quality + 1;
-                            }
-                        }
-
-                        if (_items[i].SellIn < 6)
-                        {
-                            if (_items[i].Quality < 50)
-                            {
-                                _items[i].Quality = _items[i].Quality + 1;
-                            }
-                        }
-                    }
+                    changeInQuality = 3;
                 }
-            }
-
-            if (_items[i].Name != "Sulfuras, Hand of Ragnaros")
-            {
-                _items[i].SellIn = _items[i].SellIn - 1;
-            }
-
-            if (_items[i].SellIn < 0)
-            {
-                if (_items[i].Name != "Aged Brie")
+                else if (item.SellIn < 10)
                 {
-                    if (_items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
-                    {
-                        if (_items[i].Quality > 0)
-                        {
-                            if (_items[i].Name != "Sulfuras, Hand of Ragnaros")
-                            {
-                                _items[i].Quality = _items[i].Quality - 1;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        _items[i].Quality = _items[i].Quality - _items[i].Quality;
-                    }
+                    changeInQuality = 2;
                 }
                 else
                 {
-                    if (_items[i].Quality < 50)
-                    {
-                        _items[i].Quality = _items[i].Quality + 1;
-                    }
+                    changeInQuality = 1;
                 }
-            }
+                break;
+            case CONJURED:
+                changeInQuality = item.SellIn < 0 ? -4 : -2;
+                break;
+            default:
+                changeInQuality = item.SellIn < 0 ? -2 : -1;
+                break;
         }
+
+        item.Quality = this.GetAllowedQuality(item.Quality + changeInQuality);
+    }
+
+    private int GetAllowedQuality(int quality)
+    {
+        if (quality < 0) return 0;
+        if (quality > 50) return 50;
+
+        return quality;
     }
 }
