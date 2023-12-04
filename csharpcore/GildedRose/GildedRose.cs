@@ -20,81 +20,8 @@ public class GildedRose
     {
         foreach (var item in this._items)
         {
-            //if (item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert")
-            //{
-            //    if (item.Quality > 0)
-            //    {
-            //        if (item.Name == "Conjured")
-            //        {
-            //            item.Quality -= item.Quality > 1 ? 2: 1;
-            //        }
-            //        else if (item.Name != "Sulfuras, Hand of Ragnaros")
-            //        {
-            //            item.Quality = item.Quality - 1;
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    if (item.Quality < 50)
-            //    {
-            //        item.Quality = item.Quality + 1;
-
-            //        if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
-            //        {
-            //            if (item.SellIn < 11)
-            //            {
-            //                if (item.Quality < 50)
-            //                {
-            //                    item.Quality = item.Quality + 1;
-            //                }
-            //            }
-
-            //            if (item.SellIn < 6)
-            //            {
-            //                if (item.Quality < 50)
-            //                {
-            //                    item.Quality = item.Quality + 1;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
             this.UpdateSellIn(item);
             this.UpdateItemQuality(item);
-
-            //if (item.SellIn < 0)
-            //{
-            //    if (item.Name != "Aged Brie")
-            //    {
-            //        if (item.Name != "Backstage passes to a TAFKAL80ETC concert")
-            //        {
-            //            if (item.Quality > 0)
-            //            {
-            //                if (item.Name == "Conjured")
-            //                {
-            //                    item.Quality -= item.Quality > 1 ? 2 : 1;
-            //                }
-            //                else if (item.Name != "Sulfuras, Hand of Ragnaros")
-            //                {
-            //                    item.Quality = item.Quality - 1;
-            //                }
-            //            }
-            //        }
-            //        else
-            //        {
-            //            item.Quality = item.Quality - item.Quality;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (item.Quality < 50)
-            //        {
-            //            item.Quality = item.Quality + 1;
-            //        }
-            //    }
-            //}
         }
     }
     private void UpdateSellIn(Item item)
@@ -142,6 +69,7 @@ public class GildedRose
         item.Quality = this.GetAllowedQuality(item.Quality + changeInQuality);
     }
 
+    //This method should never be called for Sulfuras, since it can have a quality above 50.
     private int GetAllowedQuality(int quality)
     {
         if (quality < 0) return 0;
